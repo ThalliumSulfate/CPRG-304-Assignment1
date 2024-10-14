@@ -41,29 +41,32 @@ public class Algorithms {
             case 'h': {
                 for (int j = low; j < high; j++) {
                     comparison = shapes[j].compareTo(pivot);
-                    if (comparison < 0) {
+                    if (comparison > 0) {
                         i++;
                         swap(shapes, i, j);
                     }
                 }
+                break;
             }
             case 'v': {
                 for (int j = high; j > low; j--) {
                     comparison = compareVolume.compare(shapes[j], pivot);
-                    if(comparison < 0) {
+                    if(comparison > 0) {
                         i++;
                         swap(shapes, i, j);
                     }
                 }
+                break;
             }
             case 'a': {
                 for (int j = low; j < high; j++) {
                     comparison = compareBaseArea.compare(shapes[j], pivot);
-                    if(comparison < 0) {
+                    if(comparison > 0) {
                         i++;
                         swap(shapes, i, j);
                     }
                 }
+                break;
             }
         }
         swap(shapes, i + 1, high);
