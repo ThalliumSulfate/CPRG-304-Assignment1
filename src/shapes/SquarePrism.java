@@ -5,7 +5,7 @@ public class SquarePrism extends Shape
     private final double edgeLength;
 
 
-    public SquarePrism(int height, int edgeLength) {
+    public SquarePrism(double height, double edgeLength) {
         super(height);
         this.edgeLength = edgeLength;
     }
