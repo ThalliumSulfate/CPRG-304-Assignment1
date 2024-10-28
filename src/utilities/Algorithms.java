@@ -29,7 +29,7 @@ public class Algorithms {
         Random rand = new Random();
 
         //generates random index based on the list length
-        int pivotIndex = rand.nextInt(high - low) + low;
+        int pivotIndex = rand.nextInt(high - low + 1) + low;
         //Puts the randomly generated pivot as the high
         swap(shapes, pivotIndex, high);
 
@@ -38,9 +38,8 @@ public class Algorithms {
         int i = low - 1;
 
         //compares the shapes based on selected type(in args), sorts all values lower than the pivot to the left
-        for (int j = high; j > low; j--) {
-            comparison =  compareShapes(shapes[j], pivot, type); // using Kouorosh's method
-            if(comparison > 0) {
+        for (int j = low; j < high; j++) {
+            if(shouldSwap(shapes[j], pivot, type)) {
                 i++;
                 swap(shapes, i, j);
             }
@@ -63,7 +62,7 @@ public class Algorithms {
         int n = shapes.length;
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                if (shouldSwap(shapes[j], shapes[j + 1], type)) {
+                if (!shouldSwap(shapes[j], shapes[j + 1], type)) {
                     swap(shapes, j, j + 1);
                 }
             }
@@ -71,19 +70,7 @@ public class Algorithms {
     }
 
     private static boolean shouldSwap(Shape s1, Shape s2, char type) {
-        int comparison = 0;
-
-        switch (type) {
-            case 'h':
-                comparison = s1.compareTo(s2);
-                break;
-            case 'v':
-                comparison = compareVolume.compare(s1, s2);
-                break;
-            case 'a':
-                comparison = compareBaseArea.compare(s1, s2);
-                break;
-        }
+        int comparison = compareShapes(s1, s2, type);
         return comparison > 0;
     }
 
@@ -95,7 +82,7 @@ public class Algorithms {
             Shape key = shapes[i];
             int j = i - 1;
 
-            while (j >= 0 && compareShapes(shapes[j], key, type) > 0) {
+            while (j >= 0 && !shouldSwap(shapes[j], key, type)) {
                 shapes[j + 1] = shapes[j];
                 j = j - 1;
             }
@@ -121,14 +108,14 @@ public class Algorithms {
     //Selection
     public static void selectionSort(Shape[] shapes, char type) {
         for (int i = 0; i < shapes.length - 1; i++) {
-            int minIndex = i;  // Assume the min is the first element
+            int maxIndex = i;  // Assume the min is the first element
             for (int j = i + 1; j < shapes.length; j++) {
-                if (compareShapes(shapes[j], shapes[minIndex], type) < 0) {
-                    minIndex = j;  // Found new minimum; remember its index
+                if (compareShapes(shapes[j], shapes[maxIndex], type) > 0) {
+                    maxIndex = j;  // Found new minimum; remember its index
                 }
             }
-            if (minIndex != i) {
-                swap(shapes, i, minIndex);  // Swap if new minimum is found
+            if (maxIndex != i) {
+                swap(shapes, i, maxIndex);  // Swap if new minimum is found
             }
         }
     }
@@ -168,7 +155,7 @@ public class Algorithms {
         int i = 0, j = 0;
         int k = low;
         while (i < n1 && j < n2) {
-            if (compareShapes(leftArray[i], rightArray[j], type) <= 0) {
+            if (compareShapes(leftArray[i], rightArray[j], type) > 0) {
                 shapes[k] = leftArray[i];
                 i++;
             } else {
@@ -197,37 +184,46 @@ public class Algorithms {
     // counting  Sort
 
 
-    // Counting Sort for Shape objects based on Volume
-    public static void countingSort(Shape[] shapes, char type) {
-        int max = 0;
+    // Counting Sort for Shape objects input(cannot work)
+    /*public static void countingSort(Shape[] shapes, char type) {
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+
         for (Shape shape : shapes) {
             int key = extractKey(shape, type);
             if (key > max) {
                 max = key;
             }
+            if (key < min) {
+                min = key;
+            }
         }
 
+        //handle negatives
+        int offset = min < 0 ? -min : 0;
+        int range = max + offset + 1;
+
         // Initialize count array with the size of max + 1
-        int[] count = new int[max + 1];
+        int[] count = new int[range];
         Arrays.fill(count, 0);
 
         // Store the count of each element
         for (Shape shape : shapes) {
             int key = extractKey(shape, type);
-            count[key]++;
+            count[key + offset]++;
         }
 
         // Change count so that positions in the final output can be determined
-        for (int i = 1; i < count.length; i++) {
-            count[i] += count[i - 1];
+        for (int i = count.length - 2; i >= 0; i--) {
+            count[i] += count[i + 1];
         }
 
         // Build the output array
         Shape[] output = new Shape[shapes.length];
         for (int i = shapes.length - 1; i >= 0; i--) {
             int key = extractKey(shapes[i], type);
-            output[count[key] - 1] = shapes[i];
-            count[key]--;
+            output[count[key + offset] - 1] = shapes[i];
+            count[key + offset]--;
         }
 
         // Copy the sorted elements back to the original array
@@ -235,14 +231,24 @@ public class Algorithms {
     }
 
     private static int extractKey(Shape shape, char type) {
+        int key;
         switch (type) {
+            case 'h':
+                key = (int) shape.getHeight();
+                break;
             case 'v': // Sorting by volume
-                return (int) shape.calculateVolume(); // Casting volume to int
+                System.out.println(shape.calculateVolume());
+                key = (int) shape.calculateVolume(); // Casting volume to int
+                break;
             case 'a': // Sorting by base area
-                return (int) shape.calculateBaseArea(); // Casting base area to int
+                key = (int) shape.calculateBaseArea(); // Casting base area to int
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported type " + type);
         }
-    }
 
+        System.out.println("Shape: " + shape + ", Key: " + key);
+
+        return key;
+    }*/
 }

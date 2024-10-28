@@ -1,5 +1,6 @@
 package shapes;
 
+//thalia
 public class SquarePrism extends Shape
 {
     private final double edgeLength;
@@ -10,14 +11,12 @@ public class SquarePrism extends Shape
         this.edgeLength = edgeLength;
     }
 
-    public int compareTo(Shape s) {
-        return super.compareTo(s);
-    }
-
+    @Override
     public double calculateVolume() {
         return (calculateBaseArea()*height);
     }
 
+    @Override
     public double calculateBaseArea() {
         return edgeLength*edgeLength;
     }

@@ -3,6 +3,8 @@ import shapes.*;
 import utilities.Algorithms;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 public class AppDriver {
@@ -64,8 +66,8 @@ public class AppDriver {
 				Algorithms.quickSort(shapes, 0, shapes.length - 1, sortType);
 				break;
 			case 'z': // Custom sort (e.g., Counting Sort for Volume)
-				System.out.println("Using Custom Sorting Algorithm (Counting Sort)...");
-				Algorithms.countingSort(shapes, sortType);
+				System.out.println("Using Custom Sorting Algorithm (Counting Sort)...(unimplemented only works with height)");
+				//Algorithms.countingSort(shapes, sortType);
 				break;
 			default:
 				System.out.println("Error: Invalid sorting algorithm. Use -sb, -si, -ss, -sm, -sq, or -sz.");
@@ -79,44 +81,29 @@ public class AppDriver {
 		System.out.println("Sorting run time was: " + elapsedTime + " milliseconds");
 	}
 
+	//modified by Thalia
 	// Method to read shapes from file
 	private static Shape[] readShapesFromFile(String fileName) throws FileNotFoundException {
 		File file = new File(fileName);
 		Scanner scanner = new Scanner(file);
 		int numberOfShapes = scanner.nextInt();
 		Shape[] shapes = new Shape[numberOfShapes];
+		Shape newShape;
 
-		for (int i = 0; i < numberOfShapes; i++) {
-			String shapeType = scanner.next();
-			double height = scanner.nextDouble();
-			double parameter = scanner.nextDouble();
+		try {
+			for (int i = 0; i < numberOfShapes; i++) {
+				String shapeType = scanner.next();
+				double height = scanner.nextDouble();
+				double parameter = scanner.nextDouble();
 
-			switch (shapeType.toLowerCase()) {
-				case "cylinder":
-					shapes[i] = new Cylinder(height, parameter);
-					break;
-				case "cone":
-					shapes[i] = new Cone(height, parameter);
-					break;
-				case "pyramid":
-					shapes[i] = new Pyramid(parameter, height);
-					break;
-				case "squareprism":
-					shapes[i] = new SquarePrism(height, parameter);
-					break;
-				case "triangularprism":
-					shapes[i] = new TriangularPrism(height, parameter);
-					break;
-				case "pentagonalprism":
-					shapes[i] = new PentagonalPrism(height, parameter);
-					break;
-				case "octagonalprism":
-					shapes[i] = new OctagonalPrism(height, parameter);
-					break;
-				default:
-					System.out.println("Error: Unknown shape type in file: " + shapeType);
-					return new Shape[0];
+				Class<?> c = Class.forName("shapes."+shapeType);
+				Constructor<?> con = c.getConstructor(double.class, double.class);
+				newShape = (Shape) con.newInstance(height, parameter);
+				shapes[i] = newShape;
 			}
+		}
+		catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
 		}
 		scanner.close();
 		return shapes;

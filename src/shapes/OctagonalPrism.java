@@ -11,11 +11,6 @@ public class OctagonalPrism extends Shape
     }
 
     @Override
-    public int compareTo(Shape s) {
-        return super.compareTo(s);
-    }
-
-    @Override
     public double calculateVolume() {
         return height*calculateBaseArea();
     }

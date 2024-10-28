@@ -11,15 +11,6 @@ public class Pyramid extends Shape {
         this.side = side;
     }
 
-    @Override
-    public int compareTo(Shape other) {
-        if (other instanceof Pyramid) {
-            Pyramid otherPyramid = (Pyramid) other;
-            return Double.compare(this.calculateVolume(), otherPyramid.calculateVolume());
-        }
-        return 0; // Or handle other cases as needed
-    }
-
     // RETURN VOLUME
 
     @Override

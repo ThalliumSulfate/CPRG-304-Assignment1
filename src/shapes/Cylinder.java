@@ -10,11 +10,6 @@ public class Cylinder extends Shape
     }
 
     @Override
-    public int compareTo(Shape s) {
-        return super.compareTo(s);
-    }
-
-    @Override
     public double calculateVolume() {
         return (calculateBaseArea() * height);
     }
