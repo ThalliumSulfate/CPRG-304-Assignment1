@@ -137,7 +137,7 @@ public class Algorithms {
     private static int compareShapes(Shape s1, Shape s2, char type) {
         switch (type) {
             case 'h':
-                return Double.compare(s2.getHeight(), s1.getHeight()); // Descending order (kvs)
+                return s1.compareTo(s2);
             case 'v':
                 return compareVolume.compare(s1, s2);
             case 'a':
