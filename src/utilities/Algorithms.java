@@ -10,6 +10,50 @@ public class Algorithms {
     static CompareBaseArea compareBaseArea = new CompareBaseArea();
 
 
+    // Heap Sort (kvs)
+    public static void heapSort(Shape[] shapes, char type) {
+        int n = shapes.length;
+
+        // Make max heap (heapify given below)
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(shapes, n, i, type);
+        }
+
+        // Extract elements from it one by one
+        for (int i = n - 1; i > 0; i--) {
+            // Move current root (max element) to the end of the array
+            swap(shapes, 0, i);
+
+            // Call heapify on the reduced heap
+            heapify(shapes, i, 0, type);
+        }
+    }
+
+    //NEW HEAP SORT
+    // Heapify to maintain the max heap property (for descending order)
+    private static void heapify(Shape[] shapes, int n, int i, char type) {
+        int largest = i;          // Make largest as root
+        int left = 2 * i + 1;     // Left child index
+        int right = 2 * i + 2;    // Right child index
+
+        // Check if left child exists and is greater (for descending order)
+        if (left < n && compareShapes(shapes[left], shapes[largest], type) > 0) {
+            largest = left;
+        }
+
+        // Check if right child exists and is greater (for descending order)
+        if (right < n && compareShapes(shapes[right], shapes[largest], type) > 0) {
+            largest = right;
+        }
+
+        // Swap and continue heapifying if root is not largest
+        if (largest != i) {
+            swap(shapes, i, largest);
+            heapify(shapes, n, largest, type);
+        }
+    }
+
+
     //Thalia
     public static void quickSort(Shape[] shapes, int low, int high, char type) {
         if(low < high){
@@ -93,7 +137,7 @@ public class Algorithms {
     private static int compareShapes(Shape s1, Shape s2, char type) {
         switch (type) {
             case 'h':
-                return s1.compareTo(s2);
+                return Double.compare(s2.getHeight(), s1.getHeight()); // Descending order (kvs)
             case 'v':
                 return compareVolume.compare(s1, s2);
             case 'a':
