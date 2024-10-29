@@ -14,42 +14,41 @@ public class Algorithms {
     public static void heapSort(Shape[] shapes, char type) {
         int n = shapes.length;
 
-        // Make max heap (heapify given below)
+        // Make min heap (cuz descending)
         for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(shapes, n, i, type);
+            minHeapify(shapes, n, i, type);
         }
 
         // Extract elements from it one by one
         for (int i = n - 1; i > 0; i--) {
-            // Move current root (max element) to the end of the array
+            // Move current root (min element) to the end of the array
             swap(shapes, 0, i);
 
-            // Call heapify on the reduced heap
-            heapify(shapes, i, 0, type);
+            // Call minHeapify on the reduced heap
+            minHeapify(shapes, i, 0, type);
         }
     }
 
-    //NEW HEAP SORT
-    // Heapify to maintain the max heap property (for descending order)
-    private static void heapify(Shape[] shapes, int n, int i, char type) {
-        int largest = i;          // Make largest as root
+    // Min Heapify to maintain the min heap property (for ascending order)
+    private static void minHeapify(Shape[] shapes, int n, int i, char type) {
+        int smallest = i;         // Make smallest as root
         int left = 2 * i + 1;     // Left child index
         int right = 2 * i + 2;    // Right child index
 
-        // Check if left child exists and is greater (for descending order)
-        if (left < n && compareShapes(shapes[left], shapes[largest], type) > 0) {
-            largest = left;
+        // Check if left child exists and is smaller (for ascending order)
+        if (left < n && compareShapes(shapes[left], shapes[smallest], type) < 0) {
+            smallest = left;
         }
 
-        // Check if right child exists and is greater (for descending order)
-        if (right < n && compareShapes(shapes[right], shapes[largest], type) > 0) {
-            largest = right;
+        // Check if right child exists and is smaller (for ascending order)
+        if (right < n && compareShapes(shapes[right], shapes[smallest], type) < 0) {
+            smallest = right;
         }
 
-        // Swap and continue heapifying if root is not largest
-        if (largest != i) {
-            swap(shapes, i, largest);
-            heapify(shapes, n, largest, type);
+        // Swap and continue minHeapifying if root is not smallest
+        if (smallest != i) {
+            swap(shapes, i, smallest);
+            minHeapify(shapes, n, smallest, type);
         }
     }
 
