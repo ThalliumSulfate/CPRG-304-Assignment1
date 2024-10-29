@@ -65,9 +65,9 @@ public class AppDriver {
 				System.out.println("Using Quick Sort...");
 				Algorithms.quickSort(shapes, 0, shapes.length - 1, sortType);
 				break;
-			case 'z': // Custom sort (e.g., Counting Sort for Volume)
-				System.out.println("Using Custom Sorting Algorithm (Counting Sort)...(unimplemented only works with height)");
-				//Algorithms.countingSort(shapes, sortType);
+			case 'z': // Custom sort (e.g., Heap Sort for Volume)					(kvs)
+				System.out.println("Using Custom Sorting Algorithm (Heap Sort)...");
+				Algorithms.heapSort(shapes, sortType);
 				break;
 			default:
 				System.out.println("Error: Invalid sorting algorithm. Use -sb, -si, -ss, -sm, -sq, or -sz.");
